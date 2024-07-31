@@ -1,4 +1,4 @@
-TelemData  = xlsread("RUN_16_parsed.csv");
+TelemData  = xlsread("EnduranceBlueMax_parsed.csv");
 %[num,text,raw] = xlsread("EnduranceBlueMax_parsed.csv"); 
 
 VoltageData = [ ]; %packvoltage
@@ -134,21 +134,46 @@ for i = 1:length(FullData)
     end
 end
 
-writematrix(FullData,'Full Data_Run16.xls');
+%writematrix(FullData,'Full Data_Run16.xls');
 
-%get Data for Autocross runs without time matching
-timeCount5 = 1
+% %get Data for Autocross runs without time matching
+% timeCount5 = 1
+% 
+% for i = 1:64           
+%     AutoData(timeCount5,1) = VoltageData(i,1);
+%     AutoData(timeCount5,2) = VoltageData(i,2);
+%     AutoData(timeCount5,3) = CurrentData(i,2);
+%     AutoData(timeCount5,4) = CellTemperatureData(i,2);
+%     AutoData(timeCount5,5) = SOC(i,2);
+%     AutoData(timeCount5,6) = Torque(i,2);
+%     AutoData(timeCount5,7) = Speed(i,2);
+% 
+%     timeCount5 = timeCount5 + 1;
+% 
+% end
+% writematrix(AutoData,'Auto Data_Run16.xls');
 
-for i = 1:64           
-    AutoData(timeCount5,1) = VoltageData(i,1);
-    AutoData(timeCount5,2) = VoltageData(i,2);
-    AutoData(timeCount5,3) = CurrentData(i,2);
-    AutoData(timeCount5,4) = CellTemperatureData(i,2);
-    AutoData(timeCount5,5) = SOC(i,2);
-    AutoData(timeCount5,6) = Torque(i,2);
-    AutoData(timeCount5,7) = Speed(i,2);
+revheat = zeros(length(SOC), 1);
+soc_temp = SOC(:,2);
 
-    timeCount5 = timeCount5 + 1;
-
+for i = 1:length(soc_temp)
+    value = soc_temp(i);
+    value = int64(value);
+    if value == 0
+        continue;
+    end
+    if value > 100
+        continue;
+    end
+    %if mod(i,2) == 1 %since there are two readings for each temperature
+    if soc_temp(i) == pulldata(value,1) 
+        revheat(i) = CellTemperatureData(i,2) * pulldata(value,2); %multiply this by current in simulink
+    end
+    %else
+        continue;
+    %end
 end
-writematrix(AutoData,'Auto Data_Run16.xls');
+
+total = sum(revheat);
+deltaT = total/(0.007*1360); %heat released by convection
+
