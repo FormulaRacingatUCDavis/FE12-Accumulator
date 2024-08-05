@@ -216,22 +216,22 @@
 
 coefficients = [1.025390625, 0.147601536, -0.096130371,0.265421186, 0.334903172,0.381578718, 0.219563075, 0.213922773, 0.14163426, 0.092015948];
 % mV/K
+% 
+% figure
+% x = linspace(10,100,10);
+% xfit = linspace(10,101,92);
+% pp = spline(x,coefficients);
+% interpolated = fnval(pp,xfit);
+% plot(x,coefficients,'o',xfit,interpolated);
+% xlim([0,100]);
+% ylabel('Entropic Coefficient (V/K)');
+% xlabel('SOC (%)');
+% title('Entropic Coefficient vs SOC');
 
-figure
-x = linspace(10,100,10);
-xfit = linspace(10,101,92);
-pp = spline(x,coefficients);
-interpolated = fnval(pp,xfit);
-plot(x,coefficients,'o',xfit,interpolated);
-xlim([0,100]);
-ylabel('Entropic Coefficient (V/K)');
-xlabel('SOC (%)');
-title('Entropic Coefficient vs SOC');
-
-pulldata = [];
+coeffdata = [];
 for i = 1:91
-    pulldata(i+9,1) = round(xfit(1,i),0);
-    pulldata(i+9,2) = interpolated(1,i);
+    coeffdata(i+9,1) = round(xfit(1,i),0);
+    coeffdata(i+9,2) = interpolated(1,i);
 end
 
 
@@ -250,18 +250,22 @@ for i = 1:length(fulldata)
         continue;
     end
     if value == pulldata(value,1) 
-        revheat(i,1) = fulldata(i,3)/4 * fulldata(i,4) * (pulldata(value,2)/1000); %current*temp*dOCV/dT, 
-        % current div by 4 to get the reversible heat of one cell
+        revheat_pack(i,1) = fulldata(i,3)/4 * fulldata(i,4) * (coeffdata(value,2)/1000);
+        revheat_cell(i,1) = fulldata(i,3)/4 * fulldata(i,4) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
+        % current divided by 4 to get the reversible heat of one cell
+        revheat_pack(i,1) = revheat_pack(i,1)/2;
+        revheat_cell(i,1) = revheat_cell(i,1)/2;
+        % divide revheat by 2 since time data interval is 2 points per second
     end
 end
 
-total = sum(revheat);
+total = sum(revheat_cell);
 deltaT = total/(0.07*1360); %temp diff, heat released by convection
 
-revheat2 = [];
+revheat_time = [];
 for i = 1:length(revheat)
-    revheat2(i,1) = fulldata(i,1);
-    revheat2(i,2) = revheat(i,1);
+    revheat_time(i,1) = fulldata(i,1);
+    revheat_time(i,2) = revheat_cell(i,1);
 end
 
 % this is for endurance
