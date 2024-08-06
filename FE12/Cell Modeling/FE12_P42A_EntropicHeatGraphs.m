@@ -217,23 +217,22 @@
 coefficients = [1.025390625, 0.147601536, -0.096130371,0.265421186, 0.334903172,0.381578718, 0.219563075, 0.213922773, 0.14163426, 0.092015948];
 % mV/K
 % 
-% figure
-% x = linspace(10,100,10);
-% xfit = linspace(10,101,92);
-% pp = spline(x,coefficients);
-% interpolated = fnval(pp,xfit);
-% plot(x,coefficients,'o',xfit,interpolated);
-% xlim([0,100]);
-% ylabel('Entropic Coefficient (V/K)');
-% xlabel('SOC (%)');
-% title('Entropic Coefficient vs SOC');
+figure
+x = linspace(10,100,10);
+xfit = linspace(10,101,92);
+pp = spline(x,coefficients);
+interpolated = fnval(pp,xfit);
+plot(x,coefficients,'o',xfit,interpolated);
+xlim([0,100]);
+ylabel('Entropic Coefficient (V/K)');
+xlabel('SOC (%)');
+title('Entropic Coefficient vs SOC');
 
 coeffdata = [];
 for i = 1:91
     coeffdata(i+9,1) = round(xfit(1,i),0);
     coeffdata(i+9,2) = interpolated(1,i);
 end
-
 
 fulldata = xlsread("FE11 Endurance Full Data V2.xlsx");
 revheat = zeros(length(fulldata), 1);
@@ -249,8 +248,8 @@ for i = 1:length(fulldata)
     if value > 100
         continue;
     end
-    if value == pulldata(value,1) 
-        revheat_pack(i,1) = fulldata(i,3)/4 * fulldata(i,4) * (coeffdata(value,2)/1000);
+    if value == coeffdata(value,1) 
+        revheat_pack(i,1) = fulldata(i,3) * fulldata(i,4) * (coeffdata(value,2)/1000);
         revheat_cell(i,1) = fulldata(i,3)/4 * fulldata(i,4) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
         % current divided by 4 to get the reversible heat of one cell
         revheat_pack(i,1) = revheat_pack(i,1)/2;
