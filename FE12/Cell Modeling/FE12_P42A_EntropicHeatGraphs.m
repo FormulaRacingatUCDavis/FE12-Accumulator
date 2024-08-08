@@ -239,6 +239,18 @@ revheat = zeros(length(fulldata), 1);
 soc_temporary = fulldata(:,7);
 j = 0;
 
+new_current = zeros(length(fulldata), 1);
+new_temp = zeros(length(fulldata), 1);
+current_temporary = fulldata(:,3);
+temp_temporary = fulldata(:,4);
+
+for i = 1:2:length(current_temporary)
+    if i < 9238
+        new_current(i,1) = current_temporary(i) + current_temporary(i+1);
+        new_temp(i,1) = (temp_temporary(i) + temp_temporary(i+1))/2;
+    end
+end
+
 for i = 1:length(fulldata)
     value = soc_temporary(i);
     value = int64(value);
@@ -249,35 +261,25 @@ for i = 1:length(fulldata)
         continue;
     end
     if value == coeffdata(value,1) 
-        revheat_pack(i,1) = fulldata(i,3) * fulldata(i,4) * (coeffdata(value,2)/1000);
-        revheat_cell(i,1) = fulldata(i,3)/4 * fulldata(i,4) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
+        revheat_pack(i,1) = new_current(i,1) * fulldata(i,4) * (coeffdata(value,2)/1000);
+        revheat_cell(i,1) = new_current(i,1)/4 * new_temp(i,1) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
         % current divided by 4 to get the reversible heat of one cell
-        revheat_pack(i,1) = revheat_pack(i,1)/2;
-        revheat_cell(i,1) = revheat_cell(i,1)/2;
-        % divide revheat by 2 since time data interval is 2 points per second
+
+        revheat_pack(i,1) = revheat_pack(i,1);
+        revheat_cell(i,1) = revheat_cell(i,1);
     end
 end
 
-total = sum(revheat_cell);
-deltaT = total/(0.07*1360); %temp diff, heat released by convection
 
 revheat_time = [];
-for i = 1:length(revheat)
+for i = 1:length(revheat_cell)
     revheat_time(i,1) = fulldata(i,1);
     revheat_time(i,2) = revheat_cell(i,1);
 end
 
-% this is for endurance
-% gives wrong deltaT - for battery ECM block the difference with REV HEAT
-% is 0.22 K with manual R0 internal resistance, 0.23 diff with 0.016
-% constant internal resistance R0
+% bms = out.BMS_discrepency;
+% plot(bms);
+% bms_error = sum(bms)/26200; %average error, but there is a big outlier,
+% 2.3507, I estimate error to be around 4 degC
 
-% 1 Kelvin temp difference in using battery ECM block with REV HEAT
-% coefficients on its on vs battery (table-based) block with same parameters
-% but no option for rev heat coefficients
 
-% with initial conditions for table based battery diff is around 1.57 K
-% from battery ECM block, constant internal resistanc R0
-
-% 8/1/24 
-% now deltaT in model is 7.81 K (constant voltage) while here it is 3.2765 K

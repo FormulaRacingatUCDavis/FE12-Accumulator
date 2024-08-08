@@ -153,27 +153,5 @@ end
 % end
 % writematrix(AutoData,'Auto Data_Run16.xls');
 
-revheat = zeros(length(SOC), 1);
-soc_temp = SOC(:,2);
 
-for i = 1:length(soc_temp)
-    value = soc_temp(i);
-    value = int64(value);
-    if value == 0
-        continue;
-    end
-    if value > 100
-        continue;
-    end
-    %if mod(i,2) == 1 %since there are two readings for each temperature
-    if soc_temp(i) == pulldata(value,1) 
-        revheat(i) = CellTemperatureData(i,2) * pulldata(value,2); %multiply this by current in simulink
-    end
-    %else
-        continue;
-    %end
-end
-
-total = sum(revheat);
-deltaT = total/(0.007*1360); %heat released by convection
 
