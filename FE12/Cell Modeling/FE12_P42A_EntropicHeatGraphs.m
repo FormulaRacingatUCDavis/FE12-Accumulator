@@ -2,7 +2,7 @@
 % 313K = 40 C, 303K = 30 C, 298K = 25 C
 %see spreadsheet "FE12_P42A_EntropicCoefficient_notavgOCV for full data for code below 
 
-coefficients = [1.025390625, 0.147601536, -0.096130371,0.265421186, 0.334903172,0.381578718, 0.219563075, 0.213922773, 0.14163426, 0.092015948];
+coefficients = [1.025390625, 0.147601536, -0.096130371, 0.265421186, 0.334903172,0.381578718, 0.219563075, 0.213922773, 0.14163426, 0.092015948];
 % mV/K
 
 figure
@@ -35,7 +35,6 @@ temp_temporary = fulldata(:,4);
 for i = 1:2:length(current_temporary)
     if i < 9238
         new_current(i,1) = current_temporary(i) + current_temporary(i+1);
-        new_temp(i,1) = (temp_temporary(i) + temp_temporary(i+1))/2;
     end
 end
 
@@ -49,8 +48,8 @@ for i = 1:length(fulldata)
         continue;
     end
     if value == coeffdata(value,1) 
-        revheat_pack(i,1) = new_current(i,1) * fulldata(i,4) * (coeffdata(value,2)/1000);
-        revheat_cell(i,1) = new_current(i,1)/4 * new_temp(i,1) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
+        revheat_pack(i,1) = new_current(i,1) * (fulldata(i,4)+273.15) * (coeffdata(value,2)/1000);
+        revheat_cell(i,1) = new_current(i,1)/4 * (fulldata(i,4)+273.15) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
         % current divided by 4 to get the reversible heat of one cell
     end
 end
