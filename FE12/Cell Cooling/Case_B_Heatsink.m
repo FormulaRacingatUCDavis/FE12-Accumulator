@@ -19,14 +19,13 @@ for i = 1:length(current)
     %heat_flux(i) = ((current(i))^2*IR)/(pi*(radius)^2);
     heat_flux(i) = ((current(i))^2*IR)/(height/2*radius); %area as a rectangular region
     
-    Tsurface(i) = Tmax + heat_flux(i)/(2*axialthermalconductivity)*((height/2)^2); % Kelvin
-    h(i) = (heat_flux(i)*height/2)/(Tsurface(i)-Tambient);
-    %qconv(i) = h(i)*2*pi*radius^2+2*pi*radius*(Tsurface(i)-Tambient);
-    %Tsurface_withconv(i) = Tmax + (heat_flux(i)-qconv(i))/(2*axialthermalconductivity)*((height/2)^2); % Kelvin
+    Tsurface(i) = Tmax - heat_flux(i)/(2*axialthermalconductivity)*((height/2)^2); % Kelvin
+    h(i) = (heat_flux(i)*radius)/(Tsurface(i)-Tambient);
+    %qconv(i) = (h(i)*2*pi*radius^2+2*pi*radius)*(Tsurface(i)-Tambient);
+    %Tsurface_withconv(i) = Tmax - (heat_flux(i)-qconv(i))/(2*axialthermalconductivity)*((height/2)^2); % Kelvin
 
-    Rcell(i) = (Tsurface(i)-Tmax)/((current(i))^2*IR);
-    %Rcell(i) = (Tsurface(i)-Tmax)/heat_flux(i);
-    Rfins(i) = (Tmax-Tambient)/(current(i)^2*IR)-Rcell(i)-Rpaste;
+    Rcell(i) = (Tmax - Tsurface(i))/((current(i))^2*IR);
+    Rfins(i) = (Tmax - Tambient)/(current(i)^2*IR)-Rcell(i)-Rpaste;
 end
 % display(Rcell);
 % format long;
@@ -46,6 +45,6 @@ title('Rfin vs Current');
 figure
 plot(Tsurface-273.15,h);
 xlabel('Surface Temperature (degC)');
-ylabel('heat transfer coefficient (W/m2K)'); 
-title('Heat transfer coefficient vs Temperature');
+ylabel('Heat Transfer Coefficient (W/m2K)'); 
+title('Heat Transfer Coefficient vs Temperature');
 
