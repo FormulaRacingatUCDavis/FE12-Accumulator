@@ -68,7 +68,6 @@ k_s = 28.08*10^-3; % [W/m K]
 Pr_s = mu_s*Cp_s/k_s; %
 
 
-
 %spacing 
 spacing_transverse = 24/1000; % meters
 spacing_longitudinal = 23/1000; % meters
@@ -95,7 +94,7 @@ for i = 1:length(current)
     heattransfer_coefficient(i) = 1/(SurfaceArea*Rconv(i)); %average
 
     Nu(i) = heattransfer_coefficient(i) * diameter / axialthermalconductivity;
-    max_Reynolds(i) = (Nu(i) / ((C1*C2)*(Pr^(0.36))*(Pr/Prs)^(0.25)) )^(1/m);
+    max_Reynolds(i) = (Nu(i) / ((C1*C2)*(Pr^(0.36))*(Pr/Pr_s)^(0.25)) )^(1/m);
     
     %Checking where max velocity occurs
     A1 = (spacing_transverse-diameter);
@@ -107,11 +106,28 @@ for i = 1:length(current)
         V_max(i) = max_Reynolds(i)*mu/(rho*(spacing_transverse-diameter)); %Vmax is at A1
         V_inlet(i) = V_max(i)*2*(spacing_transverse-diameter)/spacing_transverse;
     end
+
+    %Pressure Drop
+    P = current*504/1000;
+    N_rows = 6;
+    P_l = spacing_longitudinal/diameter;
+    P_t = spacing_transverse/diameter;
+    P_ratio = P_t/P_l;
+    %Rough estimates of pressure drop coefficient
+    X=1.1; 
+    f = 0.9;
+    P_delta(i) = N_rows*X*(rho*V_max(i)^2/2)*f; %[Pa]
 end
 
 figure()
-plot(current*504/1000,V_inlet)
+subplot(2,1,1)
+plot(P,V_inlet)
 ylabel('Inlet Velocity [m/s]')
+xlabel('Average Power Output [kW]')
+
+subplot(2,1,2)
+plot(P,P_delta)
+ylabel('Delta P [Pa]')
 xlabel('Average Power Output [kW]')
 
 
