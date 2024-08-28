@@ -31,7 +31,7 @@ R_cell = D_cell/2; % [m] Cell radius
 k_cell = 2.15; %[W /m K] approximate average value from a paper
 L_cell = 70.15*10^-3; % [m] Cell length/height
 SA_cell = L_cell*2*pi*R_cell; %[m^2] Surface Area of cell
-R_internal = 0.135061; % [Ohms]
+R_internal = 0.0135061; % [Ohms]
 
 %Air Properties at 30 C
 rho = 1.164; % [kg/m^3]
