@@ -1,0 +1,138 @@
+Auto-Transcript Start Time:  00:15:29, 29 Aug 2024 Pacific Daylight Time 
+Current Directory: "C:\Users\salaz\OneDrive\Documentos\GitHub\FE12-Accumulator\FE12\Cell Modeling\HPPC Parameters\P45B ECM Parameters"
+
+              Welcome to ANSYS Fluent 2024 R2
+
+              Copyright 1987-2024 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: May 13 2024 11:21:01 EST  Build Id: 10192  
+ 
+Connected License Server List:	<Shared_Web_License_Server>
+
+     --------------------------------------------------------------
+     This is a student version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "EdwinPC" (win64).
+
+------------------------------------------------------------------------------------
+ID    Hostname  Core  O.S.         PID    Vendor                                   
+------------------------------------------------------------------------------------
+n0    EdwinPC   1/16  Windows-x64  25280  AMD Ryzen 9 6900HX with Radeon Graphics  
+host  EdwinPC         Windows-x64  23800  AMD Ryzen 9 6900HX with Radeon Graphics  
+
+MPI Option Selected: intel
+------------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\salaz\\OneDrive\\Documentos\\GitHub\\FE12-Accumulator\\FE12\\Cell Modeling\\HPPC Parameters\\P45B ECM Parameters\\cleanup-fluent-EdwinPC-23800.bat
+(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 0)
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+Reading "C:/Users/salaz/OneDrive/Documentos/GitHub/FE12-Accumulator/FE12/Cell Modeling/HPPC Parameters/P45B ECM Parameters/Molicel P45B.cas.h5" ...
+
+
+3D mesh
+nodes: 29917
+edges: 0
+faces: 37721 
+cells: 5833 
+reading 1 node zones
+reading 0 edge zones
+reading 2 face zones
+reading 1 cell zones
+generating pointers...done.
+extracting boundary entities...
+ 5266 boundary nodes.
+ 2983 boundary faces.
+ 1 boundary face zones.
+done.
+generating cells...done.
+
+Disabling Battery Model since it is not compatible with Mesher Mode.
+
+Warning: Curvature data for any of the zones will not be scaled. 
+Mesh is now scaled back from meters.
+analyzing boundary connectivity...done.
+
+Meshing> (cx-gui-do cx-activate-item "Information*OK")
+(cx-gui-do cx-activate-item "Key Behavioral Changes*PanelButtons*PushButton1(OK)")
+(cx-use-window-id 51)
+(cx-set-camera-relative '(27.8478 -14.1961 -10.899) '(0 0 0) '(0.0290791 0.0363305 0.0250949) 0 0)
+(cx-use-window-id 51)
+(cx-use-window-id 51)
+(cx-set-camera-relative '(0 0 0) '(0 0 0) '(0 0 0) 0 0)
+(cx-use-window-id 51)
+(cx-set-camera-relative '(111.837 -187.059 -17.8051) '(0 0 0) '(0.352243 0.247712 0.41536) 0 0)
+(cx-use-window-id 51)
+(cx-set-camera-relative '(-23.8741 24.6599 36.3635) '(0 0 0) '(-0.0519609 -0.00972652 -0.0282007) 0 0)
+(cx-gui-do cx-activate-item "Ribbon*Frame1*Frame2(Task Page)*Table1*Table3(Solution)*PushButton1(Switch to Solution)")
+(cx-gui-do cx-activate-item "Question*OK")
+
+
+Zone topology has been changed since reading the input case file.
+It is strongly recommended that you check the case setup after switching to solution mode.
+
+deleting exterior entities...done.
+
+*********************************************
+Info: Your license enables 4-way parallel execution.
+For faster simulations, please start the application with the appropriate parallel options.
+*********************************************
+
+Multicore SMT processors detected. Processor affinity set!
+
+Transferring mesh
+	transferring nodes... done
+	creating threads... done
+	transferring faces... done
+	transferring cells... done
+	updating face to cell connectivity... done
+	updating grid metrics...  done
+	post mesh transfer operations... done
+done
+
+Warning: this is a double-precision solver.
+
+     materials,
+     interface,
+     domains,
+	mixture
+     zones,
+	interior--molicel-p45b-freeparts-boss-extrude3
+	molicel-p45b-freeparts-boss-extrude3:1
+	molicel-p45b-freeparts-boss-extrude3
+     surfaces,
+     parallel,
+
+Note: 3d, pressure-based, SST k-omega case read into
+      3d, double precision, pressure-based, SST k-omega solver.
+
+
+
+Done.
+Mesh is now scaled to meters.
+(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 1)
+(newline)
+
+
+> (cx-gui-do cx-activate-item "Information*OK")
+(cx-use-window-id 51)
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-set-toggle-button2 "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton2(Edges)" #t)
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton2(Edges)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton2(Cancel)")
+(cx-use-window-id 51)
+(cx-set-camera-relative '(0.184577 0.0961893 -0.0705677) '(0 0 0) '(-0.114648 -0.0416134 -0.261445) 0 0)
+/exit y
+(cx-gui-do cx-activate-item "Question*OK")
+
+Posting ANSYS Product Improvement Program performance data 
+Done.
+Auto-Transcript Stop Time:  00:16:33, 29 Aug 2024 Pacific Daylight Time 
+Total Transcript Time: 1 Minute 4 Second.
