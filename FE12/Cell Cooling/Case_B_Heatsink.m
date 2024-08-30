@@ -1,4 +1,4 @@
-current = 6.5:0.135:26;
+current = 13:0.26:52;
 IR = 0.0135; % Ohms
 radius = 10.775/1000; % meters
 height = 70.15/1000; % meters
@@ -46,5 +46,32 @@ figure
 plot(Tsurface-273.15,h);
 xlabel('Surface Temperature (degC)');
 ylabel('Heat Transfer Coefficient (W/m2K)'); 
-title('Heat Transfer Coefficient vs Temperature');
+title('Heat Transfer Coefficient vs Surface Temperature');
+
+% t = thickness;
+% w = width;
+% l = length;
+% Lc = L + t/2;
+% P = perimeter;
+% k = thermal conductivity of heatsink material;
+% N = number of fins;
+% A_c = fin cross sectional area;
+%A_b = base area exposed to convection;
+%A_t = A_b + N*A_f; total surface area exposed to convection
+% theta = Tsurface - Tambient;
+% 
+% % for a straight, rectangular fin
+% A_p = t*L;
+% A_f = 2*w*Lc;
+% mLc = sqrt((2*h)/(k*A_p))*Lc^(3/2);
+% 
+% q_f = (sqrt(h*P*k*A_c)*theta*tanh(mLc)); % fin heat transfer rate
+% fin_efficiency = q_f / (h*A_f*theta);
+% 
+% Rfins = theta/qf;
+% Rbase = 1/(h*A_c);
+% fin_effectiveness = Rbase/Rfins;
+% 
+% q_t = N*(fin_efficiency*h*A_f*theta)+(h*A_b*theta);
+% overall_fin_efficiency = q_t/(h*A_t*theta);
 
