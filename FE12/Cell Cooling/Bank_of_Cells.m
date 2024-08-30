@@ -19,19 +19,21 @@ s_l = 23*10^-3; % [m] longitudinal spacing
 s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
 
 %Constants Based on Cell Config (assuming we are 
-C1= 0.35*(s_t/s_l)^(1/5);
+% C1= 0.35*(s_t/s_l)^(1/5);
+C1 = 0.9;
 C2 = 0.95;
+m = 0.4;
 
 %Cell Properties
 T_cell_max = 50; %[C] 
-T_ambient = 30; %[C]
-N_rows = 6; %Number of rows
+T_ambient = 35; %[C]
+N_rows = 12; %Number of rows
 D_cell = 21.55 *10^-3; %[m] Cell diameter
 R_cell = D_cell/2; % [m] Cell radius
 k_cell = 2.15; %[W /m K] approximate average value from a paper
 L_cell = 70.15*10^-3; % [m] Cell length/height
 SA_cell = L_cell*2*pi*R_cell; %[m^2] Surface Area of cell
-R_internal = 0.135061; % [Ohms]
+R_internal = 0.0135061; % [Ohms]
 
 %Air Properties at 30 C
 rho = 1.164; % [kg/m^3]
@@ -49,7 +51,7 @@ Pr_s = mu_s*Cp_s/k_s; %
 
 
 %Pack Properties
-V_nom = 504; % [V]
+V_nom = 432; % [V]
 
 
 
@@ -66,15 +68,15 @@ for i = 1:length(P)
     %Heat generation and temperature calcs
     I = (P_avg*1000/V_nom)/3; %[A]
     q_total = I^2*R_internal; % [W]
-    q_vol_gen = q_total/(pi*R_cell^2*L_cell); %[W/m^3]
-    T_s = T_cell_max-(q_vol_gen*R_cell^2)/(4*k_cell); 
+    q_vol_gen = q_total/(pi*R_cell^2*L_cell); % [W/m^3]
+    T_s = T_cell_max-(q_vol_gen*R_cell^2)/(4*k_cell); % [K]
     
     %Heat transfer coefficient 
     h= q_total/((T_s-T_ambient)*SA_cell);
     
     %Flow characteristics
     Nu = h*D_cell/k_s;
-    Re_max = Nu/(C1*C2*Pr^0.36*(Pr/Pr_s)^0.25);
+    Re_max = Nu/(C1*C2*Pr^m*(Pr/Pr_s)^0.25);
     
     %Checking where max velocity occurs
     A1 = (s_t-D_cell);
@@ -84,7 +86,7 @@ for i = 1:length(P)
         V_inlet(i) = V_max*2*(s_d-D_cell)/s_t;
     else
         V_max = Re_max*mu/(rho*(s_t-D_cell)); %Vmax is at A1
-        V_inlet(i) = V_max*2*(s_t-D_cell)/s_t;
+        V_inlet(i) = V_max*(s_t-D_cell)/s_t;
     end
     
     %Pressure Drop
