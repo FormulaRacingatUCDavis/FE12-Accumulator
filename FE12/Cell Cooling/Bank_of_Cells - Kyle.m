@@ -14,15 +14,16 @@ close all
 P_avg = 18.6; % [kW] Average power 
 
 %Cell Spacing (from center of one cell to another)
-s_t = 24*10^-3; % [m] traverse spacing
-s_l = 23*10^-3; % [m] longitudinal spacing
+s_t = 23*10^-3; % [m] traverse spacing
+s_l = 24*10^-3; % [m] longitudinal spacing
 s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
 
 %Constants Based on Cell Config (assuming we are 
-% C1= 0.35*(s_t/s_l)^(1/5);
-C1 = 0.9;
+C1= 0.35*(s_t/s_l)^(1/5);
+%C1 = 0.9;
 C2 = 0.95;
-m = 0.4;
+m = 0.6;
+%m = 0.4
 
 %Cell Properties
 T_cell_max = 50; %[C] 
@@ -30,9 +31,9 @@ T_ambient = 35; %[C]
 N_rows = 12; %Number of rows
 D_cell = 21.55 *10^-3; %[m] Cell diameter
 R_cell = D_cell/2; % [m] Cell radius
-k_cell = 2.15; %[W /m K] approximate average value from a paper
+k_cell = 2.21; %[W /m K] 
 L_cell = 70.15*10^-3; % [m] Cell length/height
-SA_cell = L_cell*2*pi*R_cell; %[m^2] Surface Area of cell
+SA_cell = 0.6*(L_cell-12.7*10^-3)*2*pi*R_cell; %[m^2] Surface Area of cell
 R_internal = 0.0135061; % [Ohms]
 
 %Air Properties at 30 C
@@ -76,16 +77,16 @@ for i = 1:length(P)
     
     %Flow characteristics
     Nu = h*D_cell/k_s;
-    Re_max = Nu/(C1*C2*Pr^m*(Pr/Pr_s)^0.25);
+    Re_max = (Nu/(C1*C2*Pr^0.36*(Pr/Pr_s)^0.25))^(1/m);
     
     %Checking where max velocity occurs
     A1 = (s_t-D_cell);
     A2 = 2*(s_d-D_cell);
     if A2<A1
-        V_max = Re_max*mu/(rho*2*(s_d-D_cell)); %Vmax is at A2
+        V_max = Re_max*mu/(rho*2*(s_d-D_cell)); %Vmax is at A2, denominator is just diameter
         V_inlet(i) = V_max*2*(s_d-D_cell)/s_t;
     else
-        V_max = Re_max*mu/(rho*(s_t-D_cell)); %Vmax is at A1
+        V_max = Re_max*mu/(D_cell); %Vmax is at A1
         V_inlet(i) = V_max*(s_t-D_cell)/s_t;
     end
     
@@ -93,9 +94,15 @@ for i = 1:length(P)
     
     P_l = s_l/D_cell;
     P_t = s_t/D_cell;
+    Pans = (P_t-1)/(P_l-1);
     P_ratio = P_t/P_l;
     %Rough estimates of pressure drop coefficient
-    X=1.1; 
+    X=1.1; % staggered graph
+    f = 0.9; % staggered graph
+    %X = 3; % aligned graph; hypothesis was that spacing was almost the
+    %same and pratically was like the aligned cells format, but these gave
+    %different results
+    %f = 0.7; % aligned graph
     f = 0.9;
     P_delta(i) = N_rows*X*(rho*V_max^2/2)*f; %[Pa]
 end
@@ -103,9 +110,9 @@ end
 %% Plotting
 figure()
 subplot(2,1,1)
-plot(P,V_inlet)
-ylabel('Inlet Velocity [m/s]')
-xlabel('Average Power Output [kW]')
+plot(V_inlet*0.01018*60,P);
+xlabel('Inlet Velocity [m3/min]')
+ylabel('Average Power Output [kW]')
 
 subplot(2,1,2)
 plot(P,P_delta)

@@ -2,43 +2,13 @@
 % we want the transverse spacing (plus diameter/2-which is variable A1) to be greater than the diagonal spacing so
 % that Vmax is at A1
 
-%diameter = 21.55; %mm
-%velocity = 0.3; %initial air velocity m/s
-
-% spacing_transverse = 22:0.5:28; %mm, spacing is from center of one cell to center of another cell
-% spacing_longitudinal = 22:0.5:28; %mm
-% spacing_diagonal = zeros(length(spacing_longitudinal), 1);
-% 
-% Vmax_table = cell(length(spacing_longitudinal), length(spacing_transverse));
-% Vmax_location_table = cell(length(spacing_longitudinal), length(spacing_transverse));
-% 
-% %Check Vmax direction
-% for i = 1:length(spacing_longitudinal)
-%     for j = 1:length(spacing_transverse)
-%         A1 = (spacing_transverse(j)+diameter)/2;
-%         spacing_diagonal(j) = sqrt((spacing_transverse(j)/2)^2 + spacing_longitudinal(i)^2);
-% 
-%         if spacing_diagonal<A1
-%             Vmax = spacing_transverse(j)/(2*(spacing_diagonal(j)-diameter)) * velocity; %Vmax is at A2
-%             %fprintf('Vmax is at A2\n');
-%             Vmax_table{i,j} = Vmax;
-%             Vmax_location_table{i, j} = 'A2';
-%         else
-%             Vmax = spacing_transverse(j)/(spacing_transverse(j)-diameter) * velocity; %Vmax is at A1
-%             %fprintf('Vmax is at A1\n');
-%             Vmax_table{i,j} = Vmax;
-%             Vmax_location_table{i, j} = 'A1';
-%         end
-%     end
-% end
-
 diameter = 21.55/1000; % meters
 axialthermalconductivity = 2.21; % W/mK
 radius = 10.775/1000; % meters
 height = 70.15/1000; % meters
 SurfaceArea = 2*pi*radius^2+2*pi*radius*height; % m^2
 
-Tambient = 30 + 273.15; % Kelvin
+Tambient = 35 + 273.15; % Kelvin
 Tmax = 50 + 273.15; % Kelvin
 
 current = 13:0.26:52; 
@@ -74,15 +44,16 @@ spacing_longitudinal = 23/1000; % meters
 spacing_diagonal = sqrt(spacing_longitudinal^2 + spacing_longitudinal^2); %[m] diagonal spacing
 spacing_ratio = spacing_transverse/spacing_longitudinal;
 
-if spacing_ratio < 2
-    C1 = 0.35*(spacing_ratio)^(1/5);
-    m = 0.6;
-else 
-    C1 = 0.4;
-    m = 0.6;
-end
-
+% if spacing_ratio < 2
+%     C1 = 0.35*(spacing_ratio)^(1/5);
+%     m = 0.6;
+% else 
+%     C1 = 0.4;
+%     m = 0.6;
+% end
+C1 = 0.9;
 C2 = 0.935; % 6 rows
+m = 0.4;
 
 
 for i = 1:length(current)
@@ -104,11 +75,11 @@ for i = 1:length(current)
         V_inlet(i) = V_max(i)*2*(spacing_diagonal-diameter)/spacing_transverse;
     else
         V_max(i) = max_Reynolds(i)*mu/(rho*(spacing_transverse-diameter)); %Vmax is at A1
-        V_inlet(i) = V_max(i)*2*(spacing_transverse-diameter)/spacing_transverse;
+        V_inlet(i) = V_max(i)*(spacing_transverse-diameter)/spacing_transverse;
     end
 
     %Pressure Drop
-    P = current*504/1000;
+    P = current*432/1000;
     N_rows = 6;
     P_l = spacing_longitudinal/diameter;
     P_t = spacing_transverse/diameter;
@@ -129,6 +100,38 @@ subplot(2,1,2)
 plot(P,P_delta)
 ylabel('Delta P [Pa]')
 xlabel('Average Power Output [kW]')
+
+diameter = 21.55; %mm
+velocity = V_inlet; %initial air velocity m/s
+
+spacing_transverse = 22:0.5:28; %mm, spacing is from center of one cell to center of another cell
+spacing_longitudinal = 22:0.5:28; %mm
+spacing_diagonal = zeros(length(spacing_longitudinal), 1);
+
+Vmax_table = cell(length(spacing_longitudinal), length(spacing_transverse));
+Vmax_location_table = cell(length(spacing_longitudinal), length(spacing_transverse));
+
+%Check Vmax direction
+for i = 1:length(spacing_longitudinal)
+    for j = 1:length(spacing_transverse)
+        A1 = (spacing_transverse(j)+diameter)/2;
+        spacing_diagonal(j) = sqrt((spacing_transverse(j)/2)^2 + spacing_longitudinal(i)^2);
+
+        if spacing_diagonal<A1
+            Vmax = spacing_transverse(j)/(2*(spacing_diagonal(j)-diameter)) * velocity; %Vmax is at A2
+            %fprintf('Vmax is at A2\n');
+            Vmax_table{i,j} = Vmax;
+            Vmax_location_table{i, j} = 'A2';
+        else
+            Vmax = spacing_transverse(j)/(spacing_transverse(j)-diameter) * velocity; %Vmax is at A1
+            %fprintf('Vmax is at A1\n');
+            Vmax_table{i,j} = Vmax;
+            Vmax_location_table{i, j} = 'A1';
+        end
+    end
+end
+
+
 
 
 

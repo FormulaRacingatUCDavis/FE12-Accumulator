@@ -16,16 +16,16 @@ Rcell = zeros(length(current), 1);
 Rfins = zeros(length(current), 1);
 
 for i = 1:length(current)
-    %heat_flux(i) = ((current(i))^2*IR)/(pi*(radius)^2);
-    heat_flux(i) = ((current(i))^2*IR)/(height/2*radius); %area as a rectangular region
+    heat_flux(i) = ((current(i))^2*IR)/(pi*(radius)^2); % is acutally a volume so need to multiply by height/2
+    %heat_flux(i) = ((current(i))^2*IR)/(height/2*radius); %area as a rectangular region
     
     Tsurface(i) = Tmax - heat_flux(i)/(2*axialthermalconductivity)*((height/2)^2); % Kelvin
     h(i) = (heat_flux(i)*radius)/(Tsurface(i)-Tambient);
     %qconv(i) = (h(i)*2*pi*radius^2+2*pi*radius)*(Tsurface(i)-Tambient);
     %Tsurface_withconv(i) = Tmax - (heat_flux(i)-qconv(i))/(2*axialthermalconductivity)*((height/2)^2); % Kelvin
 
-    Rcell(i) = (Tmax - Tsurface(i))/((current(i))^2*IR);
-    Rfins(i) = (Tmax - Tambient)/(current(i)^2*IR)-Rcell(i)-Rpaste;
+    %Rfins = (n/Rfin + 1/Rbase)^-1; %where n is number of fins
+    Rfins(i) = (Tmax - Tambient)/(current(i)^2*IR)-Rpaste; % necessary thermal resistance of heatsink and base
 end
 % display(Rcell);
 % format long;
@@ -50,15 +50,15 @@ title('Heat Transfer Coefficient vs Surface Temperature');
 
 % t = thickness;
 % w = width;
-% l = length;
+% L = length;
 % Lc = L + t/2;
 % P = perimeter;
 % k = thermal conductivity of heatsink material;
 % N = number of fins;
 % A_c = fin cross sectional area;
-%A_b = base area exposed to convection;
-%A_t = A_b + N*A_f; total surface area exposed to convection
-% theta = Tsurface - Tambient;
+% A_b = base area exposed to convection;
+% A_t = A_b + N*A_f; total surface area exposed to convection
+% theta = Tsurface - Tambient; % Tsurface at set cell temp, Tsurface above
 % 
 % % for a straight, rectangular fin
 % A_p = t*L;
