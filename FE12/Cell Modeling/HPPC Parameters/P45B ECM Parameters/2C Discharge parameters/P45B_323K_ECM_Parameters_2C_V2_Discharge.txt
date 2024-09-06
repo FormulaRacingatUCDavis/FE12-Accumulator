@@ -1,0 +1,64 @@
+KEY INFORMATION OF FULL SET OF INPUT FILES:
+The dataset consists of 10 curves at 1 temperature levels and 10 SOC levels.
+The temperature levels are
+  T = 323.000000 K
+The SOC levels are
+  SOC = 0.100000
+  SOC = 0.200000
+  SOC = 0.300000
+  SOC = 0.400000
+  SOC = 0.500000
+  SOC = 0.600000
+  SOC = 0.700000
+  SOC = 0.800000
+  SOC = 0.900000
+  SOC = 1.000000
+Perform fitting with default discharging mode
+Fitting results are saved in C:\Users\salaz\OneDrive\Documentos\GitHub\FE12-Accumulator\FE12\Cell Modeling\HPPC Parameters\P45B ECM Parameters\fittingresult
+
+
+KEY INFORMATION EXTRACTED FROM INPUT DATA:
+ Curve #    V1      V2      V3      V4     dt      i1     i2    Vmax    Vmin    SOC   dSOC   dVoc Type File-name
+    10   4.190   4.118   4.085   4.170   10.05      0     21    4.19    4.08   1.00   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse100.txt
+     9   4.083   4.016   3.991   4.077   10.05      0     21    4.08    3.99   0.90   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse90.txt
+     8   4.012   3.945   3.909   3.999   10.05      0     21    4.01    3.91   0.80   0.01   0.00 LM   P45B_HPPC_2C_323K_Discharge_Pulse80.txt
+     7   3.913   3.846   3.813   3.898   10.05      0     21    3.91    3.81   0.70   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse70.txt
+     6   3.809   3.743   3.716   3.799   10.05      0     20    3.81    3.72   0.60   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse60.txt
+     5   3.718   3.652   3.623   3.706   10.06      0     21    3.72    3.62   0.50   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse50.txt
+     4   3.607   3.541   3.512   3.595   10.05      0     21    3.61    3.51   0.40   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse40.txt
+     3   3.503   3.438   3.407   3.490   10.05      0     21    3.50    3.41   0.30   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse30.txt
+     2   3.376   3.308   3.254   3.340   10.06      0     20    3.38    3.25   0.20   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse20.txt
+     1   3.160   3.083   2.994   3.097   10.06      0     21    3.16    2.99   0.10   0.01   0.01 LM   P45B_HPPC_2C_323K_Discharge_Pulse10.txt
+WARNING: fitting is not successful for curve 1. Please use TUI command 
+         (rpsetvar 'battery/parameterestimation-debug? #t) for further debugging. 
+WARNING: fitting is not successful for curve 2. Please use TUI command 
+         (rpsetvar 'battery/parameterestimation-debug? #t) for further debugging. 
+
+CURVE-FITTING RESULTS
+********    Table of Voc, Rs, R1, C1, R2, C2 as a function of SOC    **********
+
+      SOC           Voc          Rs          R1          C1          R2          C2         (R1*C1)       (R2*C2)     sqrt(chi^2)/N
+3.000000e-01 3.502683e+00 7.207447e-03 6.222043e-04 2.400756e+04 5.154235e-03 4.146315e+04 1.493760e+01 2.137108e+02 1.875963e-01 
+4.000000e-01 3.606679e+00 7.264667e-03 9.283480e-04 2.159769e+04 3.624970e-03 6.534270e+04 2.005017e+01 2.368653e+02 1.716451e-01 
+5.000000e-01 3.717807e+00 7.286919e-03 7.784653e-04 2.281605e+04 5.885665e-03 2.648399e+04 1.776150e+01 1.558759e+02 1.175961e-01 
+6.000000e-01 3.808866e+00 7.311503e-03 6.805458e-04 2.763062e+04 2.701464e-03 6.018269e+04 1.880390e+01 1.625814e+02 1.037340e-01 
+7.000000e-01 3.912635e+00 7.395003e-03 2.939929e-04 2.162507e+04 1.208058e-02 1.550383e+04 6.357617e+00 1.872953e+02 1.812441e-01 
+8.000000e-01 4.011725e+00 7.460700e-03 1.020899e-03 1.786094e+04 2.847720e-03 5.033082e+04 1.823421e+01 1.433281e+02 1.198582e-01 
+9.000000e-01 4.082765e+00 7.447561e-03 7.826744e-04 2.944529e+04 2.467191e-03 7.605869e+04 2.304607e+01 1.876513e+02 1.293726e-01 
+1.000000e+00 4.189576e+00 7.940080e-03 6.201998e-04 3.728005e+04 1.586045e-03 6.910422e+04 2.312108e+01 1.096024e+02 7.400254e-02 
+
+
+Curve-fitting results using 5th order polynomial: 
+   VOC = + 2.360219e+00 *SOC^0 + 8.876078e+00 *SOC^1 - 2.830562e+01 *SOC^2 + 4.914946e+01 *SOC^3 - 4.107847e+01 *SOC^4 + 1.318718e+01 *SOC^5;  chisq=1.598345e-04 
+    RS = - 2.901913e-03 *SOC^0 + 9.562892e-02 *SOC^1 - 3.465711e-01 *SOC^2 + 6.042739e-01 *SOC^3 - 5.068726e-01 *SOC^4 + 1.643798e-01 *SOC^5;  chisq=2.328331e-09 
+    R1 = - 1.551120e-02 *SOC^0 + 1.272373e-01 *SOC^1 - 3.623495e-01 *SOC^2 + 4.672424e-01 *SOC^3 - 2.692098e-01 *SOC^4 + 5.319013e-02 *SOC^5;  chisq=1.732463e-07 
+    C1 = + 7.219268e+05 *SOC^0 - 6.370151e+06 *SOC^1 + 2.198111e+07 *SOC^2 - 3.600414e+07 *SOC^3 + 2.810327e+07 *SOC^4 - 8.394465e+06 *SOC^5;  chisq=2.201704e+07 
+    R2 = - 1.194916e-01 *SOC^0 + 1.319389e+00 *SOC^1 - 5.279404e+00 *SOC^2 + 9.913119e+00 *SOC^3 - 8.738679e+00 *SOC^4 + 2.906837e+00 *SOC^5;  chisq=4.513033e-05 
+    C2 = + 7.470176e+04 *SOC^0 - 1.564589e+06 *SOC^1 + 1.049606e+07 *SOC^2 - 2.604270e+07 *SOC^3 + 2.729096e+07 *SOC^4 - 1.018484e+07 *SOC^5;  chisq=1.490126e+09 
+WARNING: fitting is not successful for curve 1. Please use TUI command 
+         (rpsetvar 'battery/parameterestimation-debug? #t) for further debugging. 
+WARNING: fitting is not successful for curve 2. Please use TUI command 
+         (rpsetvar 'battery/parameterestimation-debug? #t) for further debugging. 
+Fitting completed.
+
+-----------------------------------------------------------------------

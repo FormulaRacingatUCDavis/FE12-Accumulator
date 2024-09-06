@@ -25,7 +25,6 @@ end
 fulldata = xlsread("FE11 Endurance Full Data V2.xlsx");
 revheat = zeros(length(fulldata), 1);
 soc_temporary = fulldata(:,7);
-j = 0;
 
 new_current = zeros(length(fulldata), 1);
 new_temp = zeros(length(fulldata), 1);
@@ -48,9 +47,16 @@ for i = 1:length(fulldata)
         continue;
     end
     if value == coeffdata(value,1) 
+%Updated upstream
         revheat_pack(i,1) = new_current(i,1) * (fulldata(i,4)+273.15) * (coeffdata(value,2)/1000);
         revheat_cell(i,1) = new_current(i,1)/4 * (fulldata(i,4)+273.15) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
         % current divided by 4 to get the reversible heat of one cell
+
+        revheat_pack(i,1) = new_current(i,1) * fulldata(i,4) * (coeffdata(value,2)/1000);
+        revheat_cell(i,1) = new_current(i,1)/4 * (new_temp(i,1)+273.15) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
+        % current divided by 4 to get the reversible heat of one cell
+
+ %Stashed changes
     end
 end
 
