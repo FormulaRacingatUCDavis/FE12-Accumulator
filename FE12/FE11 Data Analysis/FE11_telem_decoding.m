@@ -19,7 +19,7 @@ timeCount5 = 1;
 FullData = [ ];
 AutoData = [ ];
 
-for i = 1:length(TelemData)
+for i = 1:size(TelemData)
 
     if(TelemData(i,1) == 380)
 
@@ -68,8 +68,8 @@ end
 
 timeCount4 = 1;
 
-for i = 1:length(VoltageData)
-    for j = 1:length(CurrentData)
+for i = 1:size(VoltageData)
+    for j = 1:size(CurrentData)
 
         if VoltageData(i,1) == CurrentData(j,1)
 
@@ -90,8 +90,8 @@ for i = 1:length(VoltageData)
 
 end
 
-for i = 1:length(FullData)
-    for j = 1:length(CellTemperatureData)
+for i = 1:size(FullData)
+    for j = 1:size(CellTemperatureData)
 
         if FullData(i,1) == CellTemperatureData(j,1)
 
@@ -101,8 +101,8 @@ for i = 1:length(FullData)
     end
 end
 
-for i = 1:length(FullData)
-    for j = 1:length(Torque)
+for i = 1:size(FullData)
+    for j = 1:size(Torque)
 
         if FullData(i,1) == Torque(j,1)
 
@@ -112,8 +112,8 @@ for i = 1:length(FullData)
     end
 end
 
-for i = 1:length(FullData)
-    for j = 1:length(Speed)
+for i = 1:size(FullData)
+    for j = 1:size(Speed)
 
         if FullData(i,1) == Speed(j,1)
 
@@ -123,8 +123,8 @@ for i = 1:length(FullData)
     end
 end
 
-for i = 1:length(FullData)
-    for j = 1:length(SOC)
+for i = 1:size(FullData)
+    for j = 1:size(SOC)
 
         if FullData(i,1) == SOC(j,1)
 

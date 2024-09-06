@@ -7,7 +7,7 @@ coefficients = [1.025390625, 0.147601536, -0.096130371, 0.265421186, 0.334903172
 
 figure
 x = linspace(10,100,10);
-xfit = linspace(10,101,92);
+xfit = linspace(10,101,92); 0, 101, 100
 pp = spline(x,coefficients);
 interpolated = fnval(pp,xfit);
 plot(x,coefficients,'o',xfit,interpolated);
