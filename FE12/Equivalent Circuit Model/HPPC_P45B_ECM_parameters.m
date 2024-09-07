@@ -72,9 +72,11 @@ T2_2C = R2_2C.*C2_2C;
 T1_4C = R1_4C.*C1_4C;
 T2_4C = R2_4C.*C2_4C;
 
+avgIR_2C = 8.19999695/1000;
+avgIR_4C = 8.75918494/1000;
 
 
-%2C 
+%2C starts at 30% SOC
 coefficients2C =[-0.08430478,-0.5011749,0.19809724,0.1816177,0.19474032,0.10135652,0.11390688,0.01502992];
 
 figure
@@ -86,7 +88,7 @@ plot(x,coefficients2C,'o',xfit,interpolated);
 xlim([0,100]);
 ylabel('Entropic Coefficient (mV/K)');
 xlabel('SOC (%)');
-title('Entropic Coefficient vs SOC');
+title('Entropic Coefficient vs SOC, 2C discharge pulses');
 
 coeffdata2C = [];
 for i = 1:71
@@ -95,12 +97,7 @@ for i = 1:71
 end
 
 fulldata = xlsread("FE11 Endurance Full Data V2.xlsx");
-%revheat = zeros(size(fulldata), 1);
 soc_temporary = fulldata(:,7);
-j = 0;
-
-%new_current = zeros(size(fulldata), 1);
-%new_temp = zeros(size(fulldata), 1);
 current_temporary = fulldata(:,3);
 temp_temporary = fulldata(:,4);
 
@@ -130,8 +127,10 @@ for i = 1:size(revheat_cell2C)
     revheat_time2C(i,1) = fulldata(i,1);
     revheat_time2C(i,2) = revheat_cell2C(i,1);
 end
+
+
 %4C
-coefficients4C = [-0.11108398,-0.13713834,-0.11940002,-0.5365753,0.16471862,0.10856632,0.11627198,0.0710678,0.10696412,-0.00057222]
+coefficients4C = [-0.11108398,-0.13713834,-0.11940002,-0.5365753,0.16471862,0.10856632,0.11627198,0.0710678,0.10696412,-0.00057222];
 % mV/K
 
 figure
@@ -143,7 +142,7 @@ plot(x,coefficients4C,'o',xfit,interpolated);
 xlim([0,100]);
 ylabel('Entropic Coefficient (mV/K)');
 xlabel('SOC (%)');
-title('Entropic Coefficient vs SOC');
+title('Entropic Coefficient vs SOC, 4C discharge pulses');
 
 coeffdata4C = [];
 for i = 1:91
