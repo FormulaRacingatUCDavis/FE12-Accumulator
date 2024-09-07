@@ -6,13 +6,14 @@ diameter = 21.55/1000; % meters
 axialthermalconductivity = 2.21; % W/mK
 radius = 10.775/1000; % meters
 height = 70.15/1000; % meters
-SurfaceArea = 2*pi*radius^2+2*pi*radius*height; % m^2
+SurfaceArea = 2*pi*radius*height; % m^2
 
 Tambient = 35 + 273.15; % Kelvin
 Tmax = 50 + 273.15; % Kelvin
 
 current = 13:0.26:52; 
 resistance = 0.0135; % Ohms
+
 Ohmic_heat = zeros(length(current), 1);
 heatflux = zeros(length(current), 1);
 Tsurface = zeros(length(current), 1);
@@ -23,7 +24,7 @@ max_Reynolds = zeros(length(current), 1);
 V_max = zeros(length(current), 1);
 V_inlet = zeros(length(current), 1);
 
-%Air Properties at 30 C
+%Air Properties at 30 C change to 35 C
 rho = 1.164; % [kg/m^3]
 Cp = 1006; % [J/kg K]
 mu = 18.72*10^-6; % [N s/m^2]
@@ -58,14 +59,14 @@ m = 0.4;
 
 for i = 1:length(current)
     Ohmic_heat(i) = current(i)^2*resistance;
-    heatflux(i) = Ohmic_heat(i)/(pi*radius^2);
+    heatflux(i) = Ohmic_heat(i)/(pi*radius^2*height);
 
     Tsurface(i) = Tmax - heatflux(i)*radius^2/4*axialthermalconductivity; % Kelvin
     Rconv(i) = (Tsurface(i)-Tambient) / Ohmic_heat(i);
     heattransfer_coefficient(i) = 1/(SurfaceArea*Rconv(i)); %average
 
-    Nu(i) = heattransfer_coefficient(i) * diameter / axialthermalconductivity;
-    max_Reynolds(i) = (Nu(i) / ((C1*C2)*(Pr^(0.36))*(Pr/Pr_s)^(0.25)) )^(1/m);
+    Nu(i) = heattransfer_coefficient(i) * diameter / k_s;
+    max_Reynolds(i) = (Nu(i) / ((C1*C2)*(Pr^(0.36))*(Pr/Pr_s)^(0.25)))^(1/m);
     
     %Checking where max velocity occurs
     A1 = (spacing_transverse-diameter);

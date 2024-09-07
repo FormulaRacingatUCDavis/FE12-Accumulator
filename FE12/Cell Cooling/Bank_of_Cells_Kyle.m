@@ -28,12 +28,15 @@ m = 0.6;
 %Cell Properties
 T_cell_max = 50; %[C] 
 T_ambient = 35; %[C]
-N_rows = 12; %Number of rows
+N_rows = 12; % Number of rows
+N_cells = 6; % Number of cells per rw
 D_cell = 21.55 *10^-3; %[m] Cell diameter
 R_cell = D_cell/2; % [m] Cell radius
+%R_cell = 12.93e-3; % this is gerater than radius of the cell, larger
+%surface area = lower pressure drop
 k_cell = 2.21; %[W /m K] 
 L_cell = 70.15*10^-3; % [m] Cell length/height
-SA_cell = 0.6*(L_cell-12.7*10^-3)*2*pi*R_cell; %[m^2] Surface Area of cell
+SA_cell = 0.5*(L_cell-12.7*10^-3)*2*pi*R_cell; %[m^2] Surface Area of cell
 R_internal = 0.0135061; % [Ohms]
 
 %Air Properties at 30 C
@@ -106,6 +109,14 @@ for i = 1:length(P)
     f = 0.9;
     P_delta(i) = N_rows*X*(rho*V_max^2/2)*f; %[Pa]
 end
+
+totalcells = N_rows*N_cells;
+
+Ts_minus_To(i) = (Tsurface-Tinitial)*exp((-pi*D_cell/1000*totalcells*h)/(rho*V_inlet(i)*N_cells*s_t/1000*Cp*1000));
+
+logmeantemp(i) = (Tsurface-Tinitial-Ts_minus_To(i))/log((Tsurface-Tinitial)/Ts_minus_To); %degC, difference in inlet and outlet air temp
+
+heattransferrate= totaltubes*h*pi*diameter/1000*logmeantemp/1000; %kW/m
 
 %% Plotting
 figure()
