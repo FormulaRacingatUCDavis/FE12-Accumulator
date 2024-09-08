@@ -19,7 +19,7 @@ P_max = 20; % [kW] Max power
 % s_t = 23*10^-3; % [m] traverse spacing
 % s_l = 24*10^-3; % [m] longitudinal spacing
 s_t = 23*10^-3 : 0.5e-3 : 27e-3; % [m] traverse spacing
-s_l = 23e-3; % [m] longitudinal spacing
+s_l = 24e-3; % [m] longitudinal spacing
 %s_l = 23*10^-3 : 0.5e-3 : 27e-3; % [m] longitudinal spacing
 %s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
 
@@ -67,7 +67,7 @@ V_nom = 432; % [V]
 
 %% Calculations
 
-% For s_l = 23 mm
+% For s_l = 24 mm
 
 %Matrix Initialization
 n = 40; % number of intervals
@@ -94,7 +94,7 @@ for j = 1:length(s_t)
         
         %Checking where max velocity occurs
 
-        s_d(j) = sqrt(s_l^2 + s_t(j)^2); %[m] diagonal spacing
+        s_d(j) = sqrt(s_l^2 + (s_t(j)/2)^2); %[m] diagonal spacing
 
         A1 = (s_t(j)-D_cell);
         A2 = 2*(s_d(j)-D_cell);
