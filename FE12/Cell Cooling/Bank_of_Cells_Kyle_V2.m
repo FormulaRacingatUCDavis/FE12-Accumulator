@@ -12,14 +12,14 @@ close all
 %Air properties only evaluated at 30C and 50C
 %% Parameters
 P_avg = 18.6; % [kW] Average power 
-P_max = 20; % [kW] Max power 
+P_max = 50; % [kW] Max power 
 
 
 %Cell Spacing (from center of one cell to another)
 % s_t = 23*10^-3; % [m] traverse spacing
 % s_l = 24*10^-3; % [m] longitudinal spacing
-s_t = 23*10^-3 : 0.5e-3 : 27e-3; % [m] traverse spacing
-s_l = 24e-3; % [m] longitudinal spacing
+s_t = 23*10^-3 : 0.5e-3 : 24e-3; % [m] traverse spacing
+s_l = 23e-3; % [m] longitudinal spacing
 %s_l = 23*10^-3 : 0.5e-3 : 27e-3; % [m] longitudinal spacing
 %s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
 
@@ -33,8 +33,8 @@ m = 0.6;
 %Cell Properties
 T_cell_max = 50; %[C] 
 T_ambient = 35; %[C]
-N_rows = 12; % Number of rows
-N_cells = 6; % Number of cells per row
+N_rows = 6; % Number of rows
+N_cells = 12; % Number of cells per row
 totalcells = N_rows*N_cells;
 D_cell = 21.55 *10^-3; %[m] Cell diameter
 R_cell = D_cell/2; % [m] Cell radius
@@ -135,6 +135,6 @@ legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
 
 subplot(2,1,2)
 plot(P,P_delta)
-ylabel('Delta P [Pa]')
+ylabel('Pressure Drop [Pa]')
 xlabel('Average Power Output [kW]')
 legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
