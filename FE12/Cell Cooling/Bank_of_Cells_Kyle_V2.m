@@ -12,7 +12,7 @@ close all
 %Air properties only evaluated at 30C and 50C
 %% Parameters
 P_avg = 18.6; % [kW] Average power 
-P_max = 50; % [kW] Max power 
+P_max = 20; % [kW] Max power 
 
 
 %Cell Spacing (from center of one cell to another)
@@ -33,8 +33,8 @@ m = 0.6;
 %Cell Properties
 T_cell_max = 50; %[C] 
 T_ambient = 35; %[C]
-N_rows = 6; % Number of rows
-N_cells = 12; % Number of cells per row
+N_rows = 12; % Number of rows
+N_cells = 6; % Number of cells per row
 totalcells = N_rows*N_cells;
 D_cell = 21.55 *10^-3; %[m] Cell diameter
 R_cell = D_cell/2; % [m] Cell radius
