@@ -12,17 +12,22 @@ S_min = 0.01; S_max = H;  % [m]
 t_f_min = 0.01; t_f_max = H;% [m]
 L_f_min = 0.001; L_f_max = 0.0158; % [m]
 
-N = 100;
+%N = 100;
+N = 20;
 S = S_min:(S_max-S_min)/(N-1):S_max;
 t_f = t_f_min:(t_f_max-t_f_min)/(N-1):t_f_max;
 L_f = L_f_min:(L_f_max-L_f_min)/(N-1):L_f_max;
 
+
 Data = zeros(N,N,N);
 
-for i = 1:length(L_f)
-    for j = 1:length(t_f)
-        for k = 1:length(S)
+for i = 1:length(L_f) %row
+    for j = 1:length(t_f) % column
+        for k = 1:length(S) %matrix number (ex. first matrix out of 20 total)
             Data(i,j,k) = effectiveness(S(k),t_f(j),L_f(i),w,H,h,k);
+            if Data(i,j,k) == inf
+                Data(i,j,k) = 0;
+            end
         end
     end
 end
@@ -37,15 +42,26 @@ end
 %     end
 % end
 
-% max = max(max(max(Data)));
+max = max(max(max(Data)));
 x = L_f;
 y = t_f;
-z = S;
-% [X,Y,Z] = meshgrid(x,y,z);
+%z = S;
+%[X,Y,Z] = meshgrid(x,y,z);
 [X,Y] = meshgrid(x,y);
-surf(X,Y,Data(:,:))
+% surf(X,Y,Z,Data)
 % figure()
 % scatter3(X,Y,Z,50,Data,'filled');
+
+for i = 1:20
+    figure;
+    surf(X,Y,Data(:,:,i), 'EdgeColor', 'none');
+    colormap(spring); % Adjust colormap as needed
+    colorbar;
+    xlabel('L_f');
+    ylabel('t_f');
+    zlabel('Effectiveness');
+view(2); % Adjust viewpoint as desired
+end
 
 
 %%
