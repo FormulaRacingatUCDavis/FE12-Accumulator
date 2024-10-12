@@ -18,14 +18,10 @@ P_max = 20; % [kW] Max power
 %Cell Spacing (from center of one cell to another)
 % s_t = 23*10^-3; % [m] traverse spacing
 s_l = 24*10^-3; % [m] longitudinal spacing
-<<<<<<< Updated upstream
-s_t = 23e-3; 
 %s_t = 23e-3: 0.5e-3 : 24e-3; % [m] longitudinal spacing
-=======
 % s_l = 23*10^-3 : 0.5e-3 : 24e-3; % [m] traverse spacing
 s_t = 23e-3;%:0.5e-3:24e-3; % [m] longitudinal spacing
 %s_l = 23*10^-3 : 0.5e-3 : 27e-3; % [m] longitudinal spacing
->>>>>>> Stashed changes
 %s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
 
 %Constants Based on Cell Config 
@@ -81,7 +77,7 @@ V_nom = 432; % [V]
 
 
 
-<<<<<<< Updated upstream
+
 %% Calculations
 
 % For s_l = 24 mm
@@ -92,52 +88,8 @@ P = 0:P_avg/n:P_max;
 V_inlet = size(P);
 P_delta = size(P);
 
-for j = 1:length(s_t)
-    for i = 1:length(P)
-        P_avg = P(i);
-        %Heat generation and temperature calcs
-        I = (P_avg*1000/V_nom)/3; %[A]
-        q_total = I^2*R_internal; % [W]
-        q_vol_gen = q_total/(pi*R_cell^2*L_cell); % [W/m^3]
-        T_s = T_cell_max-(q_vol_gen*R_cell^2)/(4*k_cell); % [K]
-        
-        %Heat transfer coefficient 
-        h= q_total/((T_s-T_ambient)*SA_cell);
-        
-        %Flow characteristics
-        C1 = 0.35*(s_t(j)/s_l)^(1/5);
-        Nu = h*D_cell/k_s;
-        Re_max = (Nu/(C1*C2*Pr^0.36*(Pr/Pr_s)^0.25))^(1/m);
-        
-        %Checking where max velocity occurs
 
-        s_d(j) = sqrt(s_l^2 + (s_t(j)/2)^2); %[m] diagonal spacing
-
-        A1 = (s_t(j)-D_cell);
-        A2 = 2*(s_d(j)-D_cell);
-        if A2<A1
-            V_max = Re_max*mu/(rho*2*(s_d(j)-D_cell)); %Vmax is at A2, denominator is just diameter
-            V_inlet(j,i) = V_max*2*(s_d(j)-D_cell)/s_t(j);
-        else
-            V_max = Re_max*mu/(D_cell); %Vmax is at A1
-            V_inlet(j,i) = V_max*(s_t(j)-D_cell)/s_t(j);
-        end
-        
-        %Pressure Drop
-        
-        P_l = s_l/D_cell;
-        P_t = s_t(j)/D_cell;
-        Pans = (P_t-1)/(P_l-1);
-        P_ratio = P_t/P_l;
-
-        %Rough estimates of pressure drop coefficient
-        X= 1.1; % staggered graph
-        f = 0.9; % staggered graph
-        P_delta(j,i) = N_rows*X*(rho*V_max^2/2)*f; %[Pa]
-    
-=======
     %% Calculations
-    
     % For s_l = 24 mm
 figure;    
     %Matrix Initialization
@@ -154,7 +106,7 @@ for k = 1:2
             title = "50 Degree Max Temp";
         case 2
             title = "55 Degree Max Temp";
->>>>>>> Stashed changes
+
     end
     for j = 1:length(s_t)
         for i = 1:length(P)
