@@ -1,8 +1,8 @@
 
 %Testing Parameters:
-current = 65; %Amps(A)
+current = 40; %Amps(A)
 initialTemp = 30; %C
-crossSectionalArea = 52 * 0.01; %cm^2 [mm^2 -> cm^2] %%THIS IS THE VALUE YOU WANT TO CHANGE TO TEST DIFFERENT CROSS SECTIONS
+crossSectionalArea = 11 * 0.01; %cm^2 [mm^2 -> cm^2] %%THIS IS THE VALUE YOU WANT TO CHANGE TO TEST DIFFERENT CROSS SECTIONS
 time = 1800; %seconds 
 
 %Material Specs: Copper
@@ -31,6 +31,9 @@ busbarTempData = transpose(busbarTempData);
 busbarMaxTemp = busbarTempData(end-1);
 
 plot(totalTime,busbarTempData);
+xlabel('Time (s)')
+ylabel('Busbar Temperature (deg C)')
+title('Busbar Temperature vs Time, Cross Sectional Area = 11 mm^2')
 
 %busbarMaxTemp is the maximum temperature the busbar will reach according to
 %your parameters
