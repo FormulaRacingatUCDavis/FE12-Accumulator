@@ -26,10 +26,10 @@ N_f = zeros(size(Data));
 for i = 1:length(L_f) %row
     for j = 1:length(t_f) % column
         for k = 1:length(S) %matrix number (ex. first matrix out of 20 total)
-            [Data(i,j,k),N_f(i,j,k)] = effectiveness(S(k),t_f(j),L_f(i),w,H,h,k);
-            if Data(i,j,k) == inf
-                Data(i,j,k) = 0;
-            end
+            [Data(k,j,i),N_f(i,j,k)] = effectiveness(S(k),t_f(j),L_f(i),w,H,h,k);
+            % if Data(i,j,k) == inf
+            %     Data(i,j,k) = 0;
+            % end
         end
     end
 end
@@ -47,8 +47,8 @@ end
 max = max(max(max(Data)));
 
 x = L_f(1:19);
-y = t_f(1:19);
-z = S(1:19);
+x = t_f(1:19);
+y = S(1:19);
 
 %[X,Y,Z] = meshgrid(x,y,z);
 [X,Y] = meshgrid(x,y);
