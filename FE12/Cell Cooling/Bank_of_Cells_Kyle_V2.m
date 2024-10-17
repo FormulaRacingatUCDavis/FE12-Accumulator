@@ -97,7 +97,7 @@ figure;
     P = 0:P_avg/n:P_max;
     V_inlet = size(P);
     P_delta = size(P);
-    temperature = [50 55];
+    temperature = [50,55];
     
 for k = 1:2
     T_cell_max = temperature(k);
@@ -151,14 +151,14 @@ for k = 1:2
             f = 0.9; % staggered graph
             P_delta(j,i) = N_rows*X*(rho*V_max^2/2)*f; %[Pa]
         
-            Ts_minus_To(j,i) = (T_cell_max-T_ambient)*exp((-pi*D_cell/1000*totalcells*h)/(rho*V_inlet(i)*N_cells*s_t(j)/1000*Cp*1000));
-            logmeantempdiff(j,i) = (T_cell_max-T_ambient-Ts_minus_To(i))/log((T_cell_max-T_ambient)/Ts_minus_To(i)); %degC, difference in inlet and outlet air temp
-            heattransferrate(j,i)= totalcells*h*pi*D_cell*logmeantempdiff(i)/1000; %kW/m
+            Ts_minus_To(j,i) = (T_cell_max-T_ambient)*exp((-pi*D_cell*totalcells*h)/(rho*V_inlet(i)*N_cells*s_t(j)*Cp));
+            logmeantempdiff(j,i) = (T_cell_max-T_ambient-(Ts_minus_To(i)))/log((T_cell_max-T_ambient)/Ts_minus_To(i)); %degC, difference in inlet and outlet air temp
+            heattransferrate(j,i)= totalcells*h*pi*D_cell*logmeantempdiff(i)/1000; %W/m
         end
     end
     subplot(2,1,1)
     hold on
-    plot(V_inlet*0.01018*60,P,"DisplayName",title);
+    plot(V_inlet*0.012043*60,P,"DisplayName",title);
     xlabel('Inlet Velocity [m3/min]')
     ylabel('Average Power Output [kW]')
     legend('Location','best')

@@ -88,7 +88,7 @@ plot(x,coefficients2C,'o',xfit,interpolated);
 xlim([0,100]);
 ylabel('Entropic Coefficient (mV/K)');
 xlabel('SOC (%)');
-title('Entropic Coefficient vs SOC, 2C discharge pulses');
+%title('Entropic Coefficient vs SOC, 2C discharge pulses');
 
 coeffdata2C = [];
 for i = 1:71
@@ -142,7 +142,7 @@ plot(x,coefficients4C,'o',xfit,interpolated);
 xlim([0,100]);
 ylabel('Entropic Coefficient (mV/K)');
 xlabel('SOC (%)');
-title('Entropic Coefficient vs SOC, 4C discharge pulses');
+%title('Entropic Coefficient vs SOC, 4C discharge pulses');
 
 coeffdata4C = [];
 for i = 1:91
