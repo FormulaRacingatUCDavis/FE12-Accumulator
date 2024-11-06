@@ -17,10 +17,10 @@ P_max = 20; % [kW] Max power
 
 %Cell Spacing (from center of one cell to another)
 % s_t = 23*10^-3; % [m] traverse spacing
-s_l = 24*10^-3; % [m] longitudinal spacing
+s_l = 11.5*10^-3; % [m] longitudinal spacing
 %s_t = 23e-3: 0.5e-3 : 24e-3; % [m] longitudinal spacing
 % s_l = 23*10^-3 : 0.5e-3 : 24e-3; % [m] traverse spacing
-s_t = 23e-3;%:0.5e-3:24e-3; % [m] longitudinal spacing
+s_t = 24e-3;%:0.5e-3:24e-3; % [m] longitudinal spacing
 %s_l = 23*10^-3 : 0.5e-3 : 27e-3; % [m] longitudinal spacing
 %s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
 
@@ -185,3 +185,37 @@ end
 % ylabel('Pressure Drop [Pa]')
 % xlabel('Average Power Output [kW]')
 % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
+
+
+for j = 1:length(s_t)
+    for i = 1:length(P)
+        P_avg = P(i);
+        %Heat generation and temperature calcs
+        I = (P_avg*1000/V_nom)/3; %[A]
+        q_total = I^2*R_internal; % [W]
+        q_vol_gen = q_total/(pi*R_cell^2*L_cell); % [W/m^3]
+        T_s = T_cell_max-(q_vol_gen*R_cell^2)/(4*k_cell); % [K]
+        
+        %Heat transfer coefficient 
+        h= q_total/((T_s-T_ambient)*SA_cell);
+        
+        %Flow characteristics
+        C1 = 0.35*(s_t(j)/s_l)^(1/5);
+        Nu = h*D_cell/k_s;
+        Re_max = (Nu/(C1*C2*Pr^0.36*(Pr/Pr_s)^0.25))^(1/m);
+        
+        %Checking where max velocity occurs
+
+        s_d(j) = sqrt(s_l^2 + (s_t(j)/2)^2); %[m] diagonal spacing
+
+        A1 = (s_t(j)-D_cell);
+        A2 = 2*(s_d(j)-D_cell);
+        if A2<A1
+            V_max = Re_max*mu/(rho*2*(s_d(j)-D_cell)); %Vmax is at A2, denominator is just diameter
+            V_inlet(j,i) = V_max*2*(s_d(j)-D_cell)/s_t(j);
+        else
+            V_max = Re_max*mu/(D_cell); %Vmax is at A1
+            V_inlet(j,i) = V_max*(s_t(j)-D_cell)/s_t(j);
+        end
+        ReMAX = V_max * Dcell/mu;
+        Nu = 
