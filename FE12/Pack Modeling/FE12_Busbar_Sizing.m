@@ -2,7 +2,7 @@
 %Testing Parameters:
 current = 40; %Amps(A)
 initialTemp = 30; %C
-crossSectionalArea =  40 * 0.01; %cm^2 [mm^2 -> cm^2] %%THIS IS THE VALUE YOU WANT TO CHANGE TO TEST DIFFERENT CROSS SECTIONS
+crossSectionalArea =  11 * 0.01; %cm^2 [mm^2 -> cm^2] %%THIS IS THE VALUE YOU WANT TO CHANGE TO TEST DIFFERENT CROSS SECTIONS
 time = 1800; %seconds 
 Length = 57.5e-2;%cm
 

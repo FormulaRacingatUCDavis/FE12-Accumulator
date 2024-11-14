@@ -1,4 +1,4 @@
-TelemData  = xlsread("EnduranceBlueMax_parsed.csv");
+TelemData  = xlsread("run4_parsed.csv");
 %[num,text,raw] = xlsread("EnduranceBlueMax_parsed.csv"); 
 
 VoltageData = [ ]; %packvoltage
@@ -68,73 +68,73 @@ end
 
 timeCount4 = 1;
 
-% for i = 1:size(VoltageData)
-%     for j = 1:size(CurrentData)
-% 
-%         if VoltageData(i,1) == CurrentData(j,1)
-% 
-%             FullData(timeCount4,1) = VoltageData(i,1);
-%             FullData(timeCount4,2) = VoltageData(i,2);
-%             FullData(timeCount4,3) = CurrentData(j,2);
-% 
-%             %FullData(timeCount4,4) = CellTemperatureData(i,2);
-%             %FullData(timeCount4,5) = SOC(i,2);
-%             %FullData(timeCount4,6) = Torque(i,2);
-%             %FullData(timeCount4,7) = Speed(i,2);
-% 
-%             timeCount4 = timeCount4 + 1;
-% 
-%         end
-% 
-%     end
-% 
-% end
-% 
-% for i = 1:size(FullData)
-%     for j = 1:size(CellTemperatureData)
-% 
-%         if FullData(i,1) == CellTemperatureData(j,1)
-% 
-%             FullData(i,4) = CellTemperatureData(j,2);
-% 
-%         end
-%     end
-% end
-% 
-% for i = 1:size(FullData)
-%     for j = 1:size(Torque)
-% 
-%         if FullData(i,1) == Torque(j,1)
-% 
-%             FullData(i,5) = Torque(j,2);
-% 
-%         end
-%     end
-% end
-% 
-% for i = 1:size(FullData)
-%     for j = 1:size(Speed)
-% 
-%         if FullData(i,1) == Speed(j,1)
-% 
-%             FullData(i,6) = Speed(j,2);
-% 
-%         end
-%     end
-% end
-% 
-% for i = 1:size(FullData)
-%     for j = 1:size(SOC)
-% 
-%         if FullData(i,1) == SOC(j,1)
-% 
-%             FullData(i,7) = SOC(j,2);
-% 
-%         end
-%     end
-% end
+for i = 1:size(VoltageData)
+    for j = 1:size(CurrentData)
 
-%writematrix(FullData,'Full Data_Run16.xls');
+        if VoltageData(i,1) == CurrentData(j,1)
+
+            FullData(timeCount4,1) = VoltageData(i,1);
+            FullData(timeCount4,2) = VoltageData(i,2);
+            FullData(timeCount4,3) = CurrentData(j,2);
+
+            %FullData(timeCount4,4) = CellTemperatureData(i,2);
+            %FullData(timeCount4,5) = SOC(i,2);
+            %FullData(timeCount4,6) = Torque(i,2);
+            %FullData(timeCount4,7) = Speed(i,2);
+
+            timeCount4 = timeCount4 + 1;
+
+        end
+
+    end
+
+end
+
+for i = 1:size(FullData)
+    for j = 1:size(CellTemperatureData)
+
+        if FullData(i,1) == CellTemperatureData(j,1)
+
+            FullData(i,4) = CellTemperatureData(j,2);
+
+        end
+    end
+end
+
+for i = 1:size(FullData)
+    for j = 1:size(Torque)
+
+        if FullData(i,1) == Torque(j,1)
+
+            FullData(i,5) = Torque(j,2);
+
+        end
+    end
+end
+
+for i = 1:size(FullData)
+    for j = 1:size(Speed)
+
+        if FullData(i,1) == Speed(j,1)
+
+            FullData(i,6) = Speed(j,2);
+
+        end
+    end
+end
+
+for i = 1:size(FullData)
+    for j = 1:size(SOC)
+
+        if FullData(i,1) == SOC(j,1)
+
+            FullData(i,7) = SOC(j,2);
+
+        end
+    end
+end
+
+%writematrix(FullData,'11-2 Run 4.xls');
 
 % %get Data for Autocross runs without time matching
 % timeCount5 = 1
