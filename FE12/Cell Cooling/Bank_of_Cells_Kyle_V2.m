@@ -16,13 +16,9 @@ P_max = 20; % [kW] Max power
 
 
 %Cell Spacing (from center of one cell to another)
-% s_t = 23*10^-3; % [m] traverse spacing
 s_l = 11.5*10^-3; % [m] longitudinal spacing
-%s_t = 23e-3: 0.5e-3 : 24e-3; % [m] longitudinal spacing
-% s_l = 23*10^-3 : 0.5e-3 : 24e-3; % [m] traverse spacing
-s_t = 24e-3;%:0.5e-3:24e-3; % [m] longitudinal spacing
-%s_l = 23*10^-3 : 0.5e-3 : 27e-3; % [m] longitudinal spacing
-%s_d = sqrt(s_l^2 + s_t^2); %[m] diagonal spacing
+s_t = 24e-3;
+
 
 %Constants Based on Cell Config 
 %C1= 0.35*(s_t/s_l)^(1/5);
@@ -33,9 +29,9 @@ m = 0.6;
 %Cell Properties
 T_cell_max = 55; %[C] 
 T_ambient = 35; %[C]
-N_rows = 12; % Number of rows
+N_rows = [0,1,2,3,5,6,7,8,9,10,11,12]; % Number of rows
 N_cells = 6; % Number of cells per row
-totalcells = N_rows*N_cells;
+%totalcells = N_rows*N_cells;
 D_cell = 21.55 *10^-3; %[m] Cell diameter
 R_cell = D_cell/2; % [m] Cell radius
 k_cell = 2.21; %[W /m K] 
@@ -76,8 +72,8 @@ Pr_s = mu_s*Cp_s/k_s; %
 V_nom = 432; % [V]
 
 
-
-
+%V_inlet_target = 0.29
+V_inlet_target = 5
 %% Calculations
 
 % For s_l = 24 mm
@@ -87,7 +83,6 @@ n = 40; % number of intervals
 P = 0:P_avg/n:P_max;
 V_inlet = size(P);
 P_delta = size(P);
-
 
     %% Calculations
     % For s_l = 24 mm
@@ -134,13 +129,15 @@ for k = 1:2
             if A2<A1
                 V_max = Re_max*mu/(rho*2*(s_d(j)-D_cell)); %Vmax is at A2, denominator is just diameter
                 V_inlet(j,i) = V_max*2*(s_d(j)-D_cell)/s_t(j);
+                %fprintf('Vmax occurs at A2')
             else
                 V_max = Re_max*mu/(D_cell); %Vmax is at A1
                 V_inlet(j,i) = V_max*(s_t(j)-D_cell)/s_t(j);
+                %fprintf('Vmax occurs at A1')
             end
             
             %Pressure Drop
-            
+        for z = 1:length(N_rows)
             P_l = s_l/D_cell;
             P_t = s_t(j)/D_cell;
             Pans = (P_t-1)/(P_l-1);
@@ -149,28 +146,49 @@ for k = 1:2
             %Rough estimates of pressure drop coefficient
             X=1.1; % staggered graph
             f = 0.9; % staggered graph
-            P_delta(j,i) = N_rows*X*(rho*V_max^2/2)*f; %[Pa]
-        
-            Ts_minus_To(j,i) = (T_cell_max-T_ambient)*exp((-pi*D_cell*totalcells*h)/(rho*V_inlet(i)*N_cells*s_t(j)*Cp));
-            logmeantempdiff(j,i) = (T_cell_max-T_ambient-(Ts_minus_To(i)))/log((T_cell_max-T_ambient)/Ts_minus_To(i)); %degC, difference in inlet and outlet air temp
-            heattransferrate(j,i)= totalcells*h*pi*D_cell*logmeantempdiff(i)/1000; %W/m
-        end
+
+            %P_delta(i) = N_rows(z)*X*(rho*V_max^2/2)*f; %[Pa]
+
+            totalcells = N_rows(z)*N_cells;
+            T_ambient_new = 35
+            T_cell_max = 50
+            Ts_minus_To(z) = (T_cell_max-T_ambient_new)*exp((-pi*D_cell*totalcells*h)/(rho*V_inlet_target*N_cells*s_t(j)*Cp));
+            logmeantempdiff(z) = (T_cell_max-T_ambient_new-(Ts_minus_To(z)))/log((T_cell_max-T_ambient_new)/Ts_minus_To(z)); %degC, difference in inlet and outlet air temp
+            heattransferrate(z)= totalcells*h*pi*D_cell*logmeantempdiff(z)/1000; %W/m
+      
+            Tout(z) = -(Ts_minus_To(z)-T_cell_max)
+            %T_ambient_new = T_ambient_new + Tout(z)
+            end
+        end    
     end
-    subplot(2,1,1)
-    hold on
-    plot(V_inlet*0.012043*60,P,"DisplayName",title);
-    xlabel('Inlet Velocity [m3/min]')
-    ylabel('Average Power Output [kW]')
-    legend('Location','best')
-    % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
+    % subplot(2,1,1)
+    % hold on
+    % plot(V_inlet*0.012043*60,P,"DisplayName",title);
+    % xlabel('Inlet Velocity [m3/min]')
+    % ylabel('Average Power Output [kW]')
+    % legend('Location','best')
+    % % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
+    % 
+    % subplot(2,1,2)
+    % hold on
+    % plot(P,P_delta,"DisplayName",title)
+    % ylabel('Pressure Drop [Pa]')
+    % xlabel('Average Power Output [kW]')
+    % % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
+    % legend('Location','best')
     
-    subplot(2,1,2)
+    subplot(3,1,1)
     hold on
-    plot(P,P_delta,"DisplayName",title)
-    ylabel('Pressure Drop [Pa]')
-    xlabel('Average Power Output [kW]')
-    % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
-    legend('Location','best')
+    plot(N_rows,logmeantempdiff)
+    legend('logmeantempdiff')
+
+    subplot(3,1,2)
+    plot(N_rows,Tout-T_ambient)
+    legend('T_diff')
+
+    subplot(3,1,3)
+    plot(N_rows,Tout)
+    legend('Toutlet')
 end
 %% Plotting
 % figure()
@@ -186,36 +204,3 @@ end
 % xlabel('Average Power Output [kW]')
 % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
 
-
-for j = 1:length(s_t)
-    for i = 1:length(P)
-        P_avg = P(i);
-        %Heat generation and temperature calcs
-        I = (P_avg*1000/V_nom)/3; %[A]
-        q_total = I^2*R_internal; % [W]
-        q_vol_gen = q_total/(pi*R_cell^2*L_cell); % [W/m^3]
-        T_s = T_cell_max-(q_vol_gen*R_cell^2)/(4*k_cell); % [K]
-        
-        %Heat transfer coefficient 
-        h= q_total/((T_s-T_ambient)*SA_cell);
-        
-        %Flow characteristics
-        C1 = 0.35*(s_t(j)/s_l)^(1/5);
-        Nu = h*D_cell/k_s;
-        Re_max = (Nu/(C1*C2*Pr^0.36*(Pr/Pr_s)^0.25))^(1/m);
-        
-        %Checking where max velocity occurs
-
-        s_d(j) = sqrt(s_l^2 + (s_t(j)/2)^2); %[m] diagonal spacing
-
-        A1 = (s_t(j)-D_cell);
-        A2 = 2*(s_d(j)-D_cell);
-        if A2<A1
-            V_max = Re_max*mu/(rho*2*(s_d(j)-D_cell)); %Vmax is at A2, denominator is just diameter
-            V_inlet(j,i) = V_max*2*(s_d(j)-D_cell)/s_t(j);
-        else
-            V_max = Re_max*mu/(D_cell); %Vmax is at A1
-            V_inlet(j,i) = V_max*(s_t(j)-D_cell)/s_t(j);
-        end
-        ReMAX = V_max * Dcell/mu;
-        Nu = 
