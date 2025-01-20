@@ -1,0 +1,39 @@
+%% Transient Cell Modelling Script
+% clear all
+% close all
+% clc
+%% Assumptions
+%Lumped Capacitance for all cells
+%Constant properties (i.e. Internal Resistance or Air properties)
+%Convective heat transfer between cells and air is approximated as hA(T_cell-T_air_inlet)
+%Only 50% of SA of cell is exposed to convective heat transfer
+
+%% Parameters
+
+%Air Properties at 35 C
+rho = 1.1459; % [kg/m^3]
+Cp = 1006.7; % [J/kg K]
+mu = 18.915*10^-6; % [N s/m^2]
+k = 26.71*10^-3; % [W/m K] 
+Pr = mu*Cp/k; %
+
+%Cell Properties
+T_ambient = 35; %[C]
+N_cells = 12; % Number of cells per row
+D_cell = 21.55 *10^-3; %[m] Cell diameter
+R_cell = D_cell/2; % [m] Cell radius
+k_cell = 2.21; %[W /m K] Radial thermal conductivity
+L_cell = 70.15*10^-3; % [m] Cell length/height
+SA_cell = 0.5*(L_cell-12.7*10^-3)*2*pi*R_cell; %[m^2] Surface Area of cell
+R_internal = 0.0087; % [Ohms]
+
+%Cell Spacing (from center of one cell to another)
+s_l = 11.5*10^-3; % [m] longitudinal spacing
+s_t = 24e-3;
+
+%Pack Properties
+V_nom = 432; % [V]
+
+N = 1000; %Number of steps
+time = linspace(0,30*6,N); %[s]
+P = 18.6*ones(size(time)); %[kW]
