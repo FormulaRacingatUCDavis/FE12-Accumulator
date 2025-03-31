@@ -86,13 +86,13 @@ P_delta = size(P);
 
     %% Calculations
     % For s_l = 24 mm
-figure;    
+%figure;    
     %Matrix Initialization
-    n = 40; % number of intervals
-    P = 0:P_avg/n:P_max;
-    V_inlet = size(P);
-    P_delta = size(P);
-    temperature = [50,55];
+n = 40; % number of intervals
+P = 0:P_avg/n:P_max;
+V_inlet = size(P);
+P_delta = size(P);
+temperature = [50,55];
     
 for k = 1:2
     T_cell_max = temperature(k);
@@ -147,7 +147,7 @@ for k = 1:2
             X=1.1; % staggered graph
             f = 0.9; % staggered graph
 
-            %P_delta(i) = N_rows(z)*X*(rho*V_max^2/2)*f; %[Pa]
+            P_delta(i) = N_rows(z)*X*(rho*V_max^2/2)*f; %[Pa]
 
             totalcells = N_rows(z)*N_cells;
             T_ambient_new = 35
@@ -157,26 +157,30 @@ for k = 1:2
             heattransferrate(z)= totalcells*h*pi*D_cell*logmeantempdiff(z)/1000; %W/m
       
             Tout(z) = -(Ts_minus_To(z)-T_cell_max)
-            %T_ambient_new = T_ambient_new + Tout(z)
+            T_ambient_new(i) = T_ambient_new + Tout(z);
             end
         end    
     end
-    % subplot(2,1,1)
-    % hold on
-    % plot(V_inlet*0.012043*60,P,"DisplayName",title);
-    % xlabel('Inlet Velocity [m3/min]')
-    % ylabel('Average Power Output [kW]')
-    % legend('Location','best')
-    % % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
-    % 
-    % subplot(2,1,2)
-    % hold on
-    % plot(P,P_delta,"DisplayName",title)
-    % ylabel('Pressure Drop [Pa]')
-    % xlabel('Average Power Output [kW]')
-    % % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
-    % legend('Location','best')
+
+    figure;
+
+    subplot(2,1,1)
+    hold on
+    plot(V_inlet*0.012043*60,P,"DisplayName",title);
+    xlabel('Inlet Velocity [m3/min]')
+    ylabel('Average Power Output [kW]')
+    legend('Location','best')
+    % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
+
+    subplot(2,1,2)
+    hold on
+    plot(P,P_delta,"DisplayName",title)
+    ylabel('Pressure Drop [Pa]')
+    xlabel('Average Power Output [kW]')
+    % legend('23','23.5','24','24.5','25','25.5','26','26.5','27')
+    legend('Location','best')
     
+    figure;
     subplot(3,1,1)
     hold on
     plot(N_rows,logmeantempdiff)

@@ -55,8 +55,6 @@ for i = 1:length(fulldata)
         revheat_pack(i,1) = new_current(i,1) * fulldata(i,4) * (coeffdata(value,2)/1000);
         revheat_cell(i,1) = new_current(i,1)/4 * (new_temp(i,1)+273.15) * (coeffdata(value,2)/1000); %current*temp*dOCV/dT, 
         % current divided by 4 to get the reversible heat of one cell
-
- %Stashed changes
     end
 end
 

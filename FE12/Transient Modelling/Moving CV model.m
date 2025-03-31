@@ -84,32 +84,79 @@ V_nom = 432; % [V]
 %From CFD assume we know air flow characteristics 
 V_max = 3.5; %[m/s]
 D = s_t-D_cell;
-Re = rho*V_max*D/mu;
+Re = rho*V_max*D_cell/mu;
 Nu = C*(Re^m) * (Pr^(1/3));
 % Nu = (C1*(Re^m) * (Pr^0.36) * (Pr/Pr_s)^.25)/C2;
 h = Nu*k_cell/D_cell;
 
-R = 6; %number of cells per row scaling factor
+
+%R = 6; %number of cells per row scaling factor
 %Heat generation and temperature calcs
 I = (P_avg*1000/V_nom)/3; %[A]
 q_gen = I^2*R_internal; % [W] 
 
+%% Single row, one time interval
+N_plot = 0:N_rows;
+%T_outlet = -(q_gen/(h*SA_cell)+T_inlet_air(N)-T_inlet_air(1))*exp(x) + T_inlet_air(1) +q_gen/(h*SA_cell);
 
 T_surface = zeros(1,N_rows);
 T_inlet_air = zeros(1,N_rows+1); %First index is at N=0 for no 
-T_inlet_air(1) = 35; %[C]
+T_inlet_air = 35;
 
-for N = 1:N_rows
-    T_surface(N) = R*q_gen/(h*SA_cell) + T_inlet_air(N);
-    x = (-pi * D_cell * N * h)/(rho*V_max*R*N*s_t*Cp_cell);
-    T_outlet = (q_gen/(h*SA_cell)+T_inlet_air(N)-T_inlet_air(1))*exp(x) + T_inlet_air(1) -q;
+for N = 1:N_rows  % add one cell per iteration, total tubes per calculation is 1       
+    T_surface(N) = (q_gen)/(h*SA_cell) + T_inlet_air(N);
+    x = (-pi * D_cell * h)/(rho*V_max* s_t*Cp_cell);   % number of tubes considered per iteration is 1 
+    T_outlet = -(T_surface(N)-T_inlet_air(1))*exp(x) + T_surface(N);
     T_inlet_air(N+1) = T_outlet;
 end
 
-N_plot = 0:N_rows;
 figure;
 hold on
+xlabel('Cell Number');
+ylabel('Cell Surface Temperature (°C)');
+title('Cell Temperatures Across One Row')
 plot(N_plot(2:end),T_surface,'DisplayName','Cell Surface Temp [°C]')
 plot(N_plot,T_inlet_air,'DisplayName','Inlet Air Temp [°C]')
 % plot(N_plot(2:end),T_inlet_air(2:end),'DisplayName','Outlet Air Temp [°C]')
 legend('Location','best')
+
+%% Single row, tempature over time
+
+time = linspace(0,60); % seconds
+T_surface = zeros(N_rows, length(time)); 
+T_inlet_air = zeros((N_rows+1), length(time));
+T_inlet_air(:,1) = 35; %[C]
+
+% set time = 1 initial case
+for N = 1:N_rows  % add one cell per iteration, total tubes per calculation is 1       
+    T_surface(N,1) = (q_gen)/(h*SA_cell) + T_inlet_air(N,1);
+    x = (-pi * D_cell * h)/(rho*V_max* s_t*Cp_cell);   % number of tubes considered per iteration is 1 
+    T_outlet = -(T_surface(N,1)-T_inlet_air(1))*exp(x) + T_surface(N,1);
+    T_inlet_air(N+1,1) = T_outlet;
+end
+
+q = 0
+for t = 2:length(time)
+    for N = 1:N_rows
+        T_surface(N,t) = T_surface(N,t-1);
+        %new_heat = q_gen + q; % need to change q in order for surface
+        %%temperature to change
+
+        T_surface(N,t) = (q_gen)/(h*SA_cell) + T_inlet_air(N,1);
+        x = (-pi * D_cell * h)/(rho*V_max* s_t*Cp_cell);   % number of tubes considered per iteration is 1 
+        T_outlet = -(T_surface(N,t)-T_inlet_air(1))*exp(x) + T_surface(N,t);
+        T_inlet_air(N+1,t) = T_outlet;
+
+        %q = h * pi * D_cell^2 / 4 * (T_surface(N,t)-T_outlet) / (T_surface(N,t) - T_inlet_air(1));
+    end
+end
+
+[Cell_Number, Time] = meshgrid(N_plot(2:end), time);
+
+figure;
+surf(Cell_Number, Time, T_surface'); % Transpose T_surface for correct orientation
+xlabel('Cell Number');
+ylabel('Time (seconds)');
+zlabel('Cell Surface Temperature (°C)');
+title('Cell Surface Temperature vs. Time');
+colorbar; % Add colorbar for temperature scale
